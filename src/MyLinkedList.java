@@ -16,6 +16,7 @@ get(int index) возвращает элемент под индексом
  */
 
 
+import java.util.LinkedList;
 import java.util.Objects;
 
 class MyLinkedList<T> {
@@ -38,25 +39,25 @@ class MyLinkedList<T> {
     }
 
     public void remove(int index) {
-        Objects.checkIndex(index, size);
+        Node<T> current = first;
+        Node<T> nextNode = null;
+        T el = null;
 
-        if (index == 0) {
-            first = first.next;
-        } else if (index == size - 1) {
-            last = last.prev;
-        } else {
-            Node<T> next = first;
-            for (int i = 0; i < index + 1; i++) {
-                next = next.next;
+        int step = 0;
+        while (current != null) {
+            if (index == step) {
+                if (current == first) {
+                    el = current.element;
+                    current = current.next;
+                    first = current;
+                } else {
+                    nextNode.next = current.next;
+                    el = current.element;
+                }
             }
-            next.prev = next.prev.prev;
-            Node<T> prev = first;
-            for (int i = 0; i < index - 1; i++) {
-                prev = prev.next;
-            }
-            prev.next = prev.next.next;
-
-
+            nextNode = current;
+            current = current.next;
+            step++;
         }
         size--;
     }
@@ -90,6 +91,19 @@ class MyLinkedList<T> {
         }
     }
 
+    private boolean isElementIndex(int index) {
+        return index >= 0 && index < size;
+    }
+
+    private void checkElementIndex(int index) {
+        if (!isElementIndex(index))
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: " + index + ", Size: " + size;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("[");
@@ -114,13 +128,24 @@ class MyLinkedListTest {
     public static void main(String[] args) {
         MyLinkedList<String> myLinkedList = new MyLinkedList<>();
         myLinkedList.add("Hello");
-        myLinkedList.add("Hello1");
-        myLinkedList.add("Hello2");
-        System.out.println("myLinkedList = " + myLinkedList);
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
+        myLinkedList.add("Hello");
         System.out.println("myLinkedList.size() = " + myLinkedList.size());
-        myLinkedList.remove(2);
         System.out.println("myLinkedList = " + myLinkedList);
+        for (int i = 0; i < 12; i++) {
+            myLinkedList.remove(i);
+        }
         System.out.println("myLinkedList.size() = " + myLinkedList.size());
+        System.out.println("myLinkedList = " + myLinkedList);
 
 
     }

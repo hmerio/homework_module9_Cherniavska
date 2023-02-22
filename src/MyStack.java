@@ -37,27 +37,28 @@ public class MyStack<T> {
     }
 
     public void remove(int index) {
-        Objects.checkIndex(index, size);
+        Node<T> current = first;
+        Node<T> nextNode = null;
+        T el = null;
 
-        if (index == 0) {
-            first = first.next;
-        } else if (index == size - 1) {
-            last = last.prev;
-        } else {
-            Node<T> next = first;
-            for (int i = 0; i < index + 1; i++) {
-                next = next.next;
+        int step = 0;
+        while (current != null) {
+            if (index == step) {
+                if (current == first) {
+                    el = current.element;
+                    current = current.next;
+                    first = current;
+                } else {
+                    nextNode.next = current.next;
+                    el = current.element;
+                }
             }
-            next.prev = next.prev.prev;
-            Node<T> prev = first;
-            for (int i = 0; i < index - 1; i++) {
-                prev = prev.next;
-            }
-            prev.next = prev.next.next;
-
-
+            nextNode = current;
+            current = current.next;
+            step++;
         }
         size--;
+
     }
 
     public void clear() {
@@ -120,21 +121,25 @@ class MyStackTest {
 
         MyStack<Integer> myStack = new MyStack<>();
         myStack.push(12);
-        myStack.push(32);
-        myStack.push(9);
-        myStack.push(1200);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
+        myStack.push(12);
 
         System.out.println("myStack = " + myStack);
         System.out.println("myStack.size() = " + myStack.size());
-        System.out.println("myStack.pop() = " + myStack.pop());
-        System.out.println("myStack.pop() = " + myStack.pop());
-        System.out.println("myStack.pop() = " + myStack.pop());
+
+        for (int i = 0; i < 10; i++) {
+            myStack.remove(i);
+        }
 
         System.out.println("myStack = " + myStack);
         System.out.println("myStack.size() = " + myStack.size());
-        myStack.clear();
-        System.out.println("myStack = " + myStack);
-
 
     }
 }

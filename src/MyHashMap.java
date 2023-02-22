@@ -16,11 +16,9 @@ get(Object key) возвращает значение(Object value) по клю�
 
 
 public class MyHashMap<K, V> {
-    private Node<K, V>[] bucket;
-    private K key;
-    private V value;
+    private final Node<K, V>[] bucket;
     private int size;
-    private int CAPACITY = 16;
+    private final int CAPACITY = 16;
 
     private int index;
 
@@ -28,17 +26,16 @@ public class MyHashMap<K, V> {
     public MyHashMap() {
         bucket = new Node[CAPACITY];
     }
-    
+
     public void put(K key, V value) {
 
-        if (size >= CAPACITY) {
+        if (size == CAPACITY) {
             resize();
         }
 
         index = (key.hashCode()) % CAPACITY;
 
-        if (index == -1)
-            index = key.hashCode() % size;
+        if (index == -1) index = key.hashCode() % size;
 
 
         Node<K, V> node = bucket[index];
@@ -100,7 +97,13 @@ public class MyHashMap<K, V> {
     }
 
     public void clear() {
-        bucket = null;
+
+        Node<K, V>[] tab;
+        if ((tab = bucket) != null && size > 0) {
+            size = 0;
+            for (int i = 0; i < tab.length; ++i)
+                tab[i] = null;
+        }
         size = 0;
     }
 
@@ -129,11 +132,7 @@ public class MyHashMap<K, V> {
 
         @Override
         public String toString() {
-            return "[" +
-                    key +
-                    "=" +
-                    value +
-                    ']';
+            return "[" + key + "=" + value + ']';
         }
     }
 
@@ -154,7 +153,10 @@ public class MyHashMap<K, V> {
                 sb.append(current.getKey()).append("=").append(current.getValue()).append(", ");
             }
         }
-        sb.deleteCharAt(sb.lastIndexOf(", "));
+        if (size > 0) {
+            sb.deleteCharAt(sb.lastIndexOf(", "));
+        }
+
         return "{" + sb.toString().trim() + "}";
     }
 }
@@ -166,18 +168,40 @@ class MyHashMapTest {
         jobSalary.put("JS", 2000);
         jobSalary.put("Sales", 1500);
         jobSalary.put("5654", 4500000);
-
-        System.out.println("jobSalary = " + jobSalary);
+        jobSalary.put("5604", 4500000);
+        jobSalary.put("5054", 4500000);
+        jobSalary.put("56e4", 4500000);
+        jobSalary.put("5ewr54", 4500000);
+        jobSalary.put("5rff4", 4500000);
+        jobSalary.put("56g4", 4500000);
+        jobSalary.put("56b54", 4500000);
+        jobSalary.put("56rge4", 4500000);
+        jobSalary.put("5ted54", 4500000);
+        jobSalary.put("5gdf54", 4500000);
+        jobSalary.put("5vfd54", 4500000);
+        jobSalary.put("56erf4", 4500000);
+        jobSalary.put("5dfv4", 4500000);
+        jobSalary.put("5cv4", 4500000);
+        jobSalary.put("56wr44", 4500000);
+        jobSalary.put("534te4", 4500000);
         System.out.println("jobSalary.size() = " + jobSalary.size());
-        System.out.println("jobSalary.get(\"JS\") = " + jobSalary.get("JS"));
-        System.out.println("jobSalary.get(\"Java\") = " + jobSalary.get("Java"));
 
-        System.out.println("jobSalary.get(\"Sales\") = " + jobSalary.get("Sales"));
 
-        System.out.println("jobSalary.remove(\"JS\") = " + jobSalary.remove("JS"));
-        System.out.println("jobSalary.remove(\"Sales\") = " + jobSalary.remove("Sales"));
-        System.out.println("jobSalary = " + jobSalary);
-        System.out.println("jobSalary.size() = " + jobSalary.size());
+//        System.out.println("jobSalary = " + jobSalary);
+//        System.out.println("jobSalary.size() = " + jobSalary.size());
+//        System.out.println("jobSalary.get(\"JS\") = " + jobSalary.get("JS"));
+//        System.out.println("jobSalary.get(\"Java\") = " + jobSalary.get("Java"));
+//
+//        System.out.println("jobSalary.get(\"Sales\") = " + jobSalary.get("Sales"));
+//
+//        System.out.println("jobSalary.remove(\"JS\") = " + jobSalary.remove("JS"));
+//        System.out.println("jobSalary.remove(\"Sales\") = " + jobSalary.remove("Sales"));
+//        System.out.println("jobSalary = " + jobSalary);
+//        System.out.println("jobSalary.size() = " + jobSalary.size());
+//
+//        jobSalary.clear();
+//        System.out.println("jobSalary = " + jobSalary);
+//        System.out.println("jobSalary.size() = " + jobSalary.size());
 
 
     }

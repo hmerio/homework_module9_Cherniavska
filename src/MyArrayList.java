@@ -42,7 +42,7 @@ public class MyArrayList<T> {
         }
     }
 
-    public void add(Object value) {
+    public void add(T value) {
         resize();
         elements[size] = value;
         size++;
@@ -66,7 +66,6 @@ public class MyArrayList<T> {
     }
 
     public void clear() {
-        size = 0;
         elements = new Object[0];
     }
 
