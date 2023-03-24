@@ -38,28 +38,34 @@ class MyLinkedList<T> {
         size++;
     }
 
-    public void remove(int index) {
-        Node<T> current = first;
-        Node<T> nextNode = null;
-        T el = null;
-
-        int step = 0;
-        while (current != null) {
-            if (index == step) {
-                if (current == first) {
-                    el = current.element;
-                    current = current.next;
-                    first = current;
-                } else {
-                    nextNode.next = current.next;
-                    el = current.element;
-                }
-            }
-            nextNode = current;
-            current = current.next;
-            step++;
+    public T remove(int index) {
+        Node<T> currentNode = findNode(index);
+        if (index == 0) {
+            first = currentNode.next;
+            first.prev = null;
+        } else if (index == size) {
+            last = currentNode.prev;
+            last.next = null;
+        } else {
+            currentNode.prev.next = currentNode.next;
+            currentNode.next.prev = currentNode.prev;
         }
-        size--;
+        this.size--;
+        return currentNode.element;
+    }
+
+    private Node<T> findNode(int index) {
+        Objects.checkIndex(index, size);
+        Node<T> currentNode = first;
+        int tmpIndex = 0;
+        while (currentNode.next != null) {
+            if (tmpIndex == index) {
+                break;
+            }
+            currentNode = currentNode.next;
+            tmpIndex++;
+        }
+        return currentNode;
     }
 
     public void clear() {
@@ -81,7 +87,7 @@ class MyLinkedList<T> {
         return current.element;
     }
 
-    private static class Node<T> {
+    static class Node<T> {
         T element;
         Node<T> next;
         Node<T> prev;
@@ -91,18 +97,6 @@ class MyLinkedList<T> {
         }
     }
 
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
-
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
-    }
-
-    private String outOfBoundsMsg(int index) {
-        return "Index: " + index + ", Size: " + size;
-    }
 
     @Override
     public String toString() {
@@ -127,18 +121,10 @@ class MyLinkedList<T> {
 class MyLinkedListTest {
     public static void main(String[] args) {
         MyLinkedList<String> myLinkedList = new MyLinkedList<>();
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
-        myLinkedList.add("Hello");
+        for (int i = 0; i < 12 ; i++) {
+            myLinkedList.add("Hello");
+        }
+
         System.out.println("myLinkedList.size() = " + myLinkedList.size());
         System.out.println("myLinkedList = " + myLinkedList);
         for (int i = 0; i < 12; i++) {

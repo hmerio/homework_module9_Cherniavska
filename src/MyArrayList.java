@@ -66,7 +66,9 @@ public class MyArrayList<T> {
     }
 
     public void clear() {
-        elements = new Object[0];
+
+            elements = new Object[DEFAULT_CAPACITY];
+            size = 0;
     }
 
 
